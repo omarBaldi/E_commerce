@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import Login from './pages/login/login';
 
 function App() {
 	const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -25,9 +26,13 @@ function App() {
 						<li>
 							<Link to='/checkout'>Checkout</Link>
 						</li>
-						{authenticated && (
+						{authenticated ? (
 							<li>
 								<Link to='/admin'>Admin</Link>
+							</li>
+						) : (
+							<li>
+								<Link to='/login'>Login</Link>
 							</li>
 						)}
 					</ul>
@@ -44,6 +49,23 @@ function App() {
 						<>
 							<h1>This is the CHECKOUT page</h1>
 						</>
+					</Route>
+					<Route path='/login'>
+						<Login
+							{...{
+								pageTitle: 'Login page',
+								usernameFieldData: {
+									textFieldPlaceholder: 'Insert your username',
+									labelText: 'Username',
+									textFieldName: 'username',
+								},
+								passwordFieldData: {
+									textFieldPlaceholder: 'Insert your password',
+									labelText: 'Password',
+									textFieldName: 'password',
+								},
+							}}
+						/>
 					</Route>
 					<Route path='/admin'>
 						<>
