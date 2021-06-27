@@ -1,6 +1,18 @@
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 function App() {
+	const [authenticated, setAuthenticated] = useState<boolean>(false);
+
+	const checkIfUserIsAuthenticated = (): void => {
+		const currentUserFound = !!localStorage.getItem('userID');
+		setAuthenticated(currentUserFound);
+	};
+
+	useEffect(() => {
+		checkIfUserIsAuthenticated();
+	}, []);
+
 	return (
 		<div className='App'>
 			<Router>
@@ -13,9 +25,11 @@ function App() {
 						<li>
 							<Link to='/checkout'>Checkout</Link>
 						</li>
-						<li>
-							<Link to='/admin'>Admin</Link>
-						</li>
+						{authenticated && (
+							<li>
+								<Link to='/admin'>Admin</Link>
+							</li>
+						)}
 					</ul>
 				</nav>
 
