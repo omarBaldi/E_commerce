@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './pages/login/login';
+import Homepage from './pages/homepage/homepage';
 import { LinkRoute } from './atoms/link-route/link-route';
 import Routes from './appRoutes';
 
@@ -48,9 +49,7 @@ function App() {
         {/* Render pages */}
         <Switch>
           <Route exact path='/'>
-            <>
-              <h1>This is the MAIN page</h1>
-            </>
+            <Homepage />
           </Route>
           <Route path='/checkout'>
             <>
