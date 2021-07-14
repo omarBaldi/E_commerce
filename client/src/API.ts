@@ -5,7 +5,7 @@ class APICalls {
   constructor() {
     this.baseURL = 'https://fakestoreapi.com/products';
   }
-  async retrieveProducts(): Promise<any[] | null> {
+  async retrieveProducts(): Promise<any[]> {
     try {
       const { data: products } = await axios({
         method: 'GET',
@@ -13,7 +13,18 @@ class APICalls {
       });
       return products;
     } catch (error) {
-      return null;
+      throw error;
+    }
+  }
+  async retrieveSingleProduct(ID: string): Promise<any> {
+    try {
+      const { data: productInfo } = await axios({
+        method: 'GET',
+        url: `${this.baseURL}/${ID}`,
+      });
+      return productInfo;
+    } catch (error) {
+      throw error;
     }
   }
 }

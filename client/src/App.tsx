@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './pages/login/login';
 import Homepage from './pages/homepage/homepage';
+import ShowProduct from './pages/show-product/show-product';
 import { LinkRoute } from './atoms/link-route/link-route';
 import Routes from './appRoutes';
 
@@ -30,26 +31,37 @@ function App() {
     setFilteredRoutes(newRoutes);
   };
 
+  const renderRoutes = (): JSX.Element[] => {
+    return filteredRoutes.map((currentRoute, index) => {
+      const { url, text } = currentRoute;
+      return (
+        <li key={index}>
+          <LinkRoute
+            {...{
+              url,
+              content: text,
+            }}
+          />
+        </li>
+      );
+    });
+  };
+
   return (
     <div className='App'>
       <Router>
         {/* Navigation menu */}
         <nav>
-          <ul>
-            {filteredRoutes.map((currentRoute, index) => {
-              return (
-                <li key={index}>
-                  <LinkRoute {...currentRoute} />
-                </li>
-              );
-            })}
-          </ul>
+          <ul>{renderRoutes()}</ul>
         </nav>
 
         {/* Render pages */}
         <Switch>
           <Route exact path='/'>
             <Homepage />
+          </Route>
+          <Route exact path='/product/:id'>
+            <ShowProduct />
           </Route>
           <Route path='/checkout'>
             <>

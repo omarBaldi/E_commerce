@@ -4,11 +4,11 @@ import LinkRouteProps from './dto';
 
 export const LinkRoute: FC<LinkRouteProps> = ({
   url,
-  text,
+  content,
 }: LinkRouteProps): JSX.Element => {
   return (
     <div>
-      <Link to={url}>{text}</Link>
+      <Link to={url}>{content}</Link>
     </div>
   );
 };

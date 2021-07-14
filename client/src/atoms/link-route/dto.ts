@@ -1,6 +1,6 @@
 type LinkRouteProps = {
   url: string;
-  text: string;
+  content: string | JSX.Element;
 };
 
 export default LinkRouteProps;
