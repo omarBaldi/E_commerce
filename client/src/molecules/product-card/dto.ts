@@ -1,4 +1,4 @@
-type ProductCardProps = {
+type ProductProps = {
   id: string;
   title: string;
   price: number;
@@ -7,4 +7,4 @@ type ProductCardProps = {
   image: string;
 };
 
-export default ProductCardProps;
+export default ProductProps;

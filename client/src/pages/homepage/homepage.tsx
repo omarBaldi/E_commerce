@@ -1,19 +1,23 @@
 import { FC, useEffect, useState } from 'react';
 import API from '../../API';
 import { ProductCard } from '../../molecules/product-card/product-card';
+import ProductCardProps from '../../molecules/product-card/dto';
 
 export const Homepage: FC<{}> = (): JSX.Element => {
   const [APIState, setAPIState] = useState<{
-    productsData: any[];
-    error: boolean;
+    productsData: ProductCardProps[];
+    error: string;
     loading: boolean;
   }>({
     productsData: [],
-    error: false,
+    error: '',
     loading: false,
   });
 
-  const updateAPIState = (key: string, value: boolean | any[]): void => {
+  const updateAPIState = (
+    key: string,
+    value: boolean | ProductCardProps[] | string
+  ): void => {
     setAPIState((prevAPIState) => ({
       ...prevAPIState,
       [key]: value,
@@ -28,10 +32,10 @@ export const Homepage: FC<{}> = (): JSX.Element => {
         const productsRetrieved = await API.retrieveProducts();
         updateAPIState('productsData', productsRetrieved);
       } catch (error) {
-        updateAPIState('error', true);
+        updateAPIState('error', error.message);
+      } finally {
+        updateAPIState('loading', false);
       }
-
-      updateAPIState('loading', false);
     })();
   }, []);
 
