@@ -7,9 +7,11 @@ export const LinkRoute: FC<LinkRouteProps> = ({
   content,
 }: LinkRouteProps): JSX.Element => {
   return (
-    <div>
-      <Link to={url}>{content}</Link>
-    </div>
+    <>
+      <Link to={url} style={{ textDecoration: 'none', cursor: 'initial' }}>
+        {content}
+      </Link>
+    </>
   );
 };
 export default LinkRoute;

@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 import API from '../../API';
-import { ProductCard } from '../../molecules/product-card/product-card';
 import ProductCardProps from '../../molecules/product-card/dto';
+import ProductCardsTemplate from '../../organisms/product-cards-template/product-cards-template';
 
 export const Homepage: FC<{}> = (): JSX.Element => {
   const [APIState, setAPIState] = useState<{
@@ -43,18 +43,12 @@ export const Homepage: FC<{}> = (): JSX.Element => {
     <div>
       {APIState.error && <div>Oops! Something went wrong!</div>}
       {APIState.loading && <div>Loading...</div>}
-      <div
-        style={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
-          padding: '3rem',
+      <ProductCardsTemplate
+        {...{
+          title: 'Products',
+          products: APIState.productsData,
         }}
-      >
-        {APIState.productsData.map((currentProduct, _) => {
-          return <ProductCard key={currentProduct.id} {...currentProduct} />;
-        })}
-      </div>
+      />
     </div>
   );
 };

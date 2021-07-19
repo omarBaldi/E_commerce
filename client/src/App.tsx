@@ -5,6 +5,7 @@ import Homepage from './pages/homepage/homepage';
 import ShowProduct from './pages/show-product/show-product';
 import { LinkRoute } from './atoms/link-route/link-route';
 import Routes from './appRoutes';
+import './App.scss';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -48,7 +49,10 @@ function App() {
   };
 
   return (
-    <div className='App'>
+    <div
+      className='App'
+      style={{ backgroundColor: '#f5f5f5', minHeight: '100vh' }}
+    >
       <Router>
         {/* Navigation menu */}
         <nav>
@@ -57,17 +61,30 @@ function App() {
 
         {/* Render pages */}
         <Switch>
-          <Route exact path='/'>
-            <Homepage />
-          </Route>
-          <Route exact path='/product/:id'>
-            <ShowProduct />
-          </Route>
-          <Route path='/checkout'>
-            <>
-              <h1>This is the CHECKOUT page</h1>
-            </>
-          </Route>
+          <Route
+            exact
+            path='/'
+            component={() => {
+              return (<Homepage />) as JSX.Element;
+            }}
+          />
+          <Route
+            path='/product/:id'
+            component={() => {
+              return (<ShowProduct />) as JSX.Element;
+            }}
+          />
+          <Route
+            path='/checkout'
+            component={() => {
+              return (
+                <>
+                  <h1>This is the CHECKOUT page</h1>
+                </>
+              ) as JSX.Element;
+            }}
+          />
+
           <Route path='/login'>
             <Login
               {...{
@@ -85,11 +102,16 @@ function App() {
               }}
             />
           </Route>
-          <Route path='/admin'>
-            <>
-              <h1>This is the ADMIN page</h1>
-            </>
-          </Route>
+          <Route
+            path='/admin'
+            component={() => {
+              return (
+                <>
+                  <h1>This is the ADMIN page</h1>
+                </>
+              ) as JSX.Element;
+            }}
+          />
         </Switch>
       </Router>
     </div>
