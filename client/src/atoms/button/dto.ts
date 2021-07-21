@@ -6,7 +6,7 @@ export enum ButtonType {
 type ButtonProps = {
   text: string;
   type?: ButtonType;
-  callbackFunc: () => void;
+  callbackFunc?: () => void;
   customStyle?: any;
 };
 

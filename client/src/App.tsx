@@ -3,13 +3,14 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './pages/login/login';
 import Homepage from './pages/homepage/homepage';
 import ShowProduct from './pages/show-product/show-product';
-import { LinkRoute } from './atoms/link-route/link-route';
+import Menu from './organisms/menu/menu';
+import LinkRouteProps from './atoms/link-route/dto';
 import Routes from './appRoutes';
 import './App.scss';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
-  const [filteredRoutes, setFilteredRoutes] = useState<any[]>([]);
+  const [filteredRoutes, setFilteredRoutes] = useState<LinkRouteProps[]>([]);
 
   const checkIfUserIsAuthenticated = (): void => {
     const currentUserFound = !!localStorage.getItem('userID');
@@ -22,30 +23,24 @@ function App() {
   }, []);
 
   const filterRoutes = (): void => {
-    const newRoutes = Routes.reduce((acc: any[], curr) => {
-      if (!curr.requiresAuth || (authenticated && curr.requiresAuth)) {
-        acc.push(curr);
-      }
-      return acc;
-    }, []);
+    interface RoutesProps {
+      url: string;
+      text: string;
+      requiresAuth?: boolean;
+    }
+
+    const newRoutes = Routes.reduce(
+      (acc: LinkRouteProps[], curr: RoutesProps) => {
+        if (!curr.requiresAuth || (authenticated && curr.requiresAuth)) {
+          const { url, text } = curr;
+          acc.push({ ...{ url, content: text } });
+        }
+        return acc;
+      },
+      []
+    );
 
     setFilteredRoutes(newRoutes);
-  };
-
-  const renderRoutes = (): JSX.Element[] => {
-    return filteredRoutes.map((currentRoute, index) => {
-      const { url, text } = currentRoute;
-      return (
-        <li key={index}>
-          <LinkRoute
-            {...{
-              url,
-              content: text,
-            }}
-          />
-        </li>
-      );
-    });
   };
 
   return (
@@ -55,9 +50,7 @@ function App() {
     >
       <Router>
         {/* Navigation menu */}
-        <nav>
-          <ul>{renderRoutes()}</ul>
-        </nav>
+        <Menu {...{ menuLinks: filteredRoutes }} />
 
         {/* Render pages */}
         <Switch>

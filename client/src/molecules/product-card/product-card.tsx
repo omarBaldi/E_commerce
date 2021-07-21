@@ -12,6 +12,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   description,
   category,
   image,
+  productAdded,
 }: ProductCardProps): JSX.Element => {
   const renderCardButton = (): JSX.Element => {
     const buttonGoToCustomStyle = {
@@ -22,7 +23,6 @@ export const ProductCard: FC<ProductCardProps> = ({
       <Button
         {...{
           text: 'View Product',
-          callbackFunc: () => console.log('Go to specifc item button clicked'),
           type: ButtonType.goTo,
           customStyle: buttonGoToCustomStyle,
         }}
@@ -42,7 +42,7 @@ export const ProductCard: FC<ProductCardProps> = ({
         <Button
           {...{
             text: '+',
-            callbackFunc: () => console.log('Add to cart button clicked'),
+            callbackFunc: productAdded,
             type: ButtonType.addToCart,
             customStyle: buttonAddToCartCustomStyle,
           }}
@@ -53,13 +53,13 @@ export const ProductCard: FC<ProductCardProps> = ({
         <div className={Styles.productCardText}>
           <p className={Styles.productCardTitle}>{title}</p>
           <p className={Styles.productCardPrice}>{`$ ${price}`}</p>
-          <LinkRoute
-            {...{
-              url: `/product/${id}`,
-              content: renderCardButton(),
-            }}
-          />
         </div>
+        <LinkRoute
+          {...{
+            url: `/product/${id}`,
+            content: renderCardButton(),
+          }}
+        />
       </div>
     );
   };

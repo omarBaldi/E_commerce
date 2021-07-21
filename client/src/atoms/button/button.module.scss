@@ -1,18 +1,22 @@
+@mixin buttonStandardStyle {
+  cursor: pointer;
+  background-color: #0d47a1;
+  color: white;
+}
+
 .buttonGoTo {
   padding: 0.5rem;
   width: 100%;
-  background-color: #0d47a1;
-  color: white;
   text-align: center;
+  @include buttonStandardStyle;
 }
 
 .buttonAddToCart {
   border-radius: 50%;
-  height: 40px;
-  width: 40px;
-  background-color: #0d47a1;
-  color: white;
+  height: 45px;
+  width: 45px;
   display: flex;
   justify-content: center;
   align-items: center;
+  @include buttonStandardStyle;
 }

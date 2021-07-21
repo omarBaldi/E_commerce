@@ -5,6 +5,7 @@ type ProductProps = {
   description: string;
   category: string;
   image: string;
+  productAdded?: () => void;
 };
 
 export default ProductProps;

@@ -2,32 +2,16 @@
   min-height: 400px;
   -webkit-box-shadow: 5px 3px 7px 3px rgba(0, 0, 0, 0.44);
   box-shadow: 5px 3px 7px 3px rgba(0, 0, 0, 0.44);
-  cursor: pointer;
   border-radius: 5px;
   margin: 2rem 0;
   padding: 1rem;
   display: flex;
   flex-direction: column;
   background-color: white;
-  cursor: pointer;
   position: relative;
 
-  .addToCartButton {
-    /* position: absolute;
-    top: 2%;
-    right: 3%; */
-    /* border-radius: 50%;
-    height: 35px;
-    width: 35px;
-    background-color: #0d47a1;
-    color: white;
-    display: flex;
-    justify-content: center;
-    align-items: center; */
-  }
-
   .imageContainer {
-    height: 65%;
+    height: 200px;
     width: 100%;
     display: flex;
 
@@ -40,7 +24,7 @@
 
   .productCardText {
     height: auto;
-    margin: 2rem 0 auto 0;
+    margin: 2rem 0 1.5rem 0;
     color: #222;
     position: relative;
     display: flex;

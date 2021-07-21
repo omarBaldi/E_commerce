@@ -8,7 +8,15 @@ export const ProductCardsTemplate: FC<ProductCardsTemplateProps> = ({
 }: ProductCardsTemplateProps): JSX.Element => {
   const renderCards = (): JSX.Element[] => {
     return products.map((currentProduct, _) => {
-      return <ProductCard key={currentProduct.id} {...currentProduct} />;
+      return (
+        <ProductCard
+          key={currentProduct.id}
+          {...{
+            ...currentProduct,
+            productAdded: () => console.log('here'),
+          }}
+        />
+      );
     });
   };
 

@@ -45,8 +45,9 @@ export const Homepage: FC<{}> = (): JSX.Element => {
       {APIState.loading && <div>Loading...</div>}
       <ProductCardsTemplate
         {...{
-          title: 'Products',
+          title: '',
           products: APIState.productsData,
+          //send back event for product card added
         }}
       />
     </div>
