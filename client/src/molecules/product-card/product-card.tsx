@@ -42,7 +42,9 @@ export const ProductCard: FC<ProductCardProps> = ({
         <Button
           {...{
             text: '+',
-            callbackFunc: productAdded,
+            callbackFunc: () =>
+              productAdded &&
+              productAdded({ id, title, price, description, category, image }),
             type: ButtonType.addToCart,
             customStyle: buttonAddToCartCustomStyle,
           }}

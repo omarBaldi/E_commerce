@@ -1,13 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import API from '../../API';
-import ProductProps from '../../molecules/product-card/dto';
+import { Product } from '../../molecules/product-card/dto';
 
 export const ShowProduct: FC<{}> = (): JSX.Element => {
   const { id: productID } = useParams<{ id: string }>();
 
   const [productState, setProductState] = useState<{
-    productInfo: ProductProps | null;
+    productInfo: Product | null;
     error: string;
     loading: boolean;
   }>({
@@ -22,7 +22,7 @@ export const ShowProduct: FC<{}> = (): JSX.Element => {
 
   const updateAPIState = (
     key: string,
-    value: ProductProps | string | boolean
+    value: Product | string | boolean
   ): void => {
     setProductState((prevProductState) => ({
       ...prevProductState,

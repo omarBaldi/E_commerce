@@ -7,10 +7,13 @@ import Menu from './organisms/menu/menu';
 import LinkRouteProps from './atoms/link-route/dto';
 import Routes from './appRoutes';
 import './App.scss';
+import ProductProps from './molecules/product-card/dto';
+import { Product } from './molecules/product-card/dto';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [filteredRoutes, setFilteredRoutes] = useState<LinkRouteProps[]>([]);
+  const [productsCart, setProductsCart] = useState<ProductProps[]>([]);
 
   const checkIfUserIsAuthenticated = (): void => {
     const currentUserFound = !!localStorage.getItem('userID');
@@ -43,6 +46,8 @@ function App() {
     setFilteredRoutes(newRoutes);
   };
 
+  const addProductToCart = (): void => {};
+
   return (
     <div
       className='App'
@@ -58,7 +63,13 @@ function App() {
             exact
             path='/'
             component={() => {
-              return (<Homepage />) as JSX.Element;
+              return (
+                <Homepage
+                  {...{
+                    callbackProductAdded: (data: Product) => console.log(data),
+                  }}
+                />
+              ) as JSX.Element;
             }}
           />
           <Route

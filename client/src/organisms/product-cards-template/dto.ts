@@ -1,8 +1,9 @@
-import ProductProps from '../../molecules/product-card/dto';
+import { Product } from '../../molecules/product-card/dto';
 
 type ProductCardsTemplateProps = {
   title: string;
-  products: ProductProps[];
+  products: Product[];
+  onProductCardClick?: any;
 };
 
 export default ProductCardsTemplateProps;

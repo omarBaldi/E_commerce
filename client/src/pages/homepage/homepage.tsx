@@ -1,11 +1,14 @@
 import { FC, useEffect, useState } from 'react';
+import HomepageProps from './dto';
 import API from '../../API';
-import ProductCardProps from '../../molecules/product-card/dto';
+import { Product } from '../../molecules/product-card/dto';
 import ProductCardsTemplate from '../../organisms/product-cards-template/product-cards-template';
 
-export const Homepage: FC<{}> = (): JSX.Element => {
+export const Homepage: FC<HomepageProps> = ({
+  callbackProductAdded,
+}: HomepageProps): JSX.Element => {
   const [APIState, setAPIState] = useState<{
-    productsData: ProductCardProps[];
+    productsData: Product[];
     error: string;
     loading: boolean;
   }>({
@@ -16,7 +19,7 @@ export const Homepage: FC<{}> = (): JSX.Element => {
 
   const updateAPIState = (
     key: string,
-    value: boolean | ProductCardProps[] | string
+    value: boolean | Product[] | string
   ): void => {
     setAPIState((prevAPIState) => ({
       ...prevAPIState,
@@ -25,7 +28,7 @@ export const Homepage: FC<{}> = (): JSX.Element => {
   };
 
   useEffect(() => {
-    (async (): Promise<any> => {
+    (async (): Promise<void> => {
       updateAPIState('loading', true);
 
       try {
@@ -47,7 +50,7 @@ export const Homepage: FC<{}> = (): JSX.Element => {
         {...{
           title: '',
           products: APIState.productsData,
-          //send back event for product card added
+          onProductCardClick: callbackProductAdded,
         }}
       />
     </div>
