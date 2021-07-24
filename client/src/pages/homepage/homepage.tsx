@@ -28,6 +28,7 @@ export const Homepage: FC<HomepageProps> = ({
   };
 
   useEffect(() => {
+    console.log(APIState.productsData.length);
     (async (): Promise<void> => {
       updateAPIState('loading', true);
 

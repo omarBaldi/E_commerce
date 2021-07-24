@@ -3,17 +3,19 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Login from './pages/login/login';
 import Homepage from './pages/homepage/homepage';
 import ShowProduct from './pages/show-product/show-product';
+import Checkout from './pages/checkout/checkout';
 import Menu from './organisms/menu/menu';
 import LinkRouteProps from './atoms/link-route/dto';
 import Routes from './appRoutes';
 import './App.scss';
-import ProductProps from './molecules/product-card/dto';
 import { Product } from './molecules/product-card/dto';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
   const [filteredRoutes, setFilteredRoutes] = useState<LinkRouteProps[]>([]);
-  const [productsCart, setProductsCart] = useState<ProductProps[]>([]);
+  const [productsCart, setProductsCart] = useState<
+    (Product & { currentNumberSelected: number })[]
+  >([]);
 
   const checkIfUserIsAuthenticated = (): void => {
     const currentUserFound = !!localStorage.getItem('userID');
@@ -46,7 +48,31 @@ function App() {
     setFilteredRoutes(newRoutes);
   };
 
-  const addProductToCart = (): void => {};
+  const productAlreadyExistInCart = (currentProductID: string): boolean => {
+    return retrieveIndexProduct(currentProductID) !== -1;
+  };
+
+  const retrieveIndexProduct = (currentProductID: string): number => {
+    return productsCart.findIndex((el) => el.id === currentProductID);
+  };
+
+  const addProductToCart = (data: Product): void => {
+    setProductsCart((prevAddedProducts) => {
+      if (!productAlreadyExistInCart(data.id)) {
+        return [
+          ...prevAddedProducts,
+          {
+            ...data,
+            currentNumberSelected: 1,
+          },
+        ];
+      } else {
+        const currentProduct = prevAddedProducts[retrieveIndexProduct(data.id)];
+        currentProduct.currentNumberSelected += 1;
+        return [...prevAddedProducts];
+      }
+    });
+  };
 
   return (
     <div
@@ -66,7 +92,7 @@ function App() {
               return (
                 <Homepage
                   {...{
-                    callbackProductAdded: (data: Product) => console.log(data),
+                    callbackProductAdded: addProductToCart,
                   }}
                 />
               ) as JSX.Element;
@@ -81,11 +107,7 @@ function App() {
           <Route
             path='/checkout'
             component={() => {
-              return (
-                <>
-                  <h1>This is the CHECKOUT page</h1>
-                </>
-              ) as JSX.Element;
+              return (<Checkout {...{ productsCart }} />) as JSX.Element;
             }}
           />
 
