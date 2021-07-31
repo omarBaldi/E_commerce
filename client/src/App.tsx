@@ -9,6 +9,7 @@ import LinkRouteProps from './atoms/link-route/dto';
 import Routes from './appRoutes';
 import './App.scss';
 import { Product } from './molecules/product-card/dto';
+import API from './API';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -16,13 +17,47 @@ function App() {
   const [productsCart, setProductsCart] = useState<
     (Product & { currentNumberSelected: number })[]
   >([]);
+  const [APIState, setAPIState] = useState<{
+    productsData: Product[];
+    error: string;
+    loading: boolean;
+  }>({
+    productsData: [],
+    error: '',
+    loading: false,
+  });
+
+  const updateAPIState = (
+    key: string,
+    value: boolean | Product[] | string
+  ): void => {
+    setAPIState((prevAPIState) => ({
+      ...prevAPIState,
+      [key]: value,
+    }));
+  };
+
+  const getAllProducts = async (): Promise<void> => {
+    console.log('Get all products');
+    updateAPIState('loading', true);
+
+    try {
+      const productsRetrieved = await API.retrieveProducts();
+      updateAPIState('productsData', productsRetrieved);
+    } catch (error) {
+      updateAPIState('error', error.message);
+    } finally {
+      updateAPIState('loading', false);
+    }
+  };
 
   const checkIfUserIsAuthenticated = (): void => {
-    const currentUserFound = !!localStorage.getItem('userID');
+    const currentUserFound: boolean = !!localStorage.getItem('userID');
     setAuthenticated(currentUserFound);
   };
 
   useEffect(() => {
+    getAllProducts();
     checkIfUserIsAuthenticated();
     filterRoutes();
   }, []);
@@ -48,16 +83,39 @@ function App() {
     setFilteredRoutes(newRoutes);
   };
 
-  const productAlreadyExistInCart = (currentProductID: string): boolean => {
+  /* const productAlreadyExistInCart = (currentProductID: string): boolean => {
     return retrieveIndexProduct(currentProductID) !== -1;
   };
 
   const retrieveIndexProduct = (currentProductID: string): number => {
     return productsCart.findIndex((el) => el.id === currentProductID);
-  };
+  }; */
 
-  const addProductToCart = (data: Product): void => {
-    setProductsCart((prevAddedProducts) => {
+  const addProductToCart = (productToAdd: Product): void => {
+    console.log('Add product to cart');
+    setProductsCart((prevAddedProductsCart) => {
+      //Check if the product is in cart
+      const productFound = prevAddedProductsCart.find(
+        (el) => el.id === productToAdd.id
+      );
+
+      if (productFound) {
+        productFound.currentNumberSelected += 1;
+        return [...prevAddedProductsCart];
+      } else {
+        return [
+          ...prevAddedProductsCart,
+          {
+            ...{
+              ...productToAdd,
+              currentNumberSelected: 0,
+            },
+          },
+        ];
+      }
+    });
+
+    /* setProductsCart((prevAddedProducts) => {
       if (!productAlreadyExistInCart(data.id)) {
         return [
           ...prevAddedProducts,
@@ -71,7 +129,7 @@ function App() {
         currentProduct.currentNumberSelected += 1;
         return [...prevAddedProducts];
       }
-    });
+    }); */
   };
 
   return (
@@ -92,6 +150,8 @@ function App() {
               return (
                 <Homepage
                   {...{
+                    title: 'This is the title for the homepage',
+                    products: APIState.productsData,
                     callbackProductAdded: addProductToCart,
                   }}
                 />
