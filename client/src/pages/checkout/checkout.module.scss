@@ -1,0 +1,17 @@
+.checkoutContainer {
+  display: grid;
+  grid-template-columns: 1fr minmax(500px, 500px);
+  min-height: 100vh;
+  .checkoutCards {
+    border-top: 1px solid lightgrey;
+    padding: 3rem;
+    > div:first-child {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
+  .checkoutSummary {
+    background-color: lightgrey;
+  }
+}

@@ -11,7 +11,7 @@ import './App.scss';
 import { Product } from './molecules/product-card/dto';
 import API from './API';
 import { APIStateInterface } from './pages/homepage/dto';
-import { ButtonAction } from './pages/checkout/dto';
+import { ButtonAction } from './organisms/product-checkout-template/dto';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -164,7 +164,7 @@ function App() {
                 <Checkout
                   {...{
                     productsCart,
-                    callBackButton: updateProductCart,
+                    emitButtonCartEvent: updateProductCart,
                   }}
                 />
               ) as JSX.Element;
