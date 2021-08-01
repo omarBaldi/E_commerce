@@ -1,0 +1,12 @@
+.loadingBarContainer {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > p {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 2em;
+  }
+}

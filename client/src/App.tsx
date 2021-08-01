@@ -11,6 +11,7 @@ import './App.scss';
 import { Product } from './molecules/product-card/dto';
 import API from './API';
 import { APIStateInterface } from './pages/homepage/dto';
+import { ButtonAction } from './pages/checkout/dto';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -79,6 +80,28 @@ function App() {
     setFilteredRoutes(newRoutes);
   };
 
+  const updateProductCart = (
+    currentProductClicked: Product,
+    buttonClickedAction: ButtonAction
+  ): void => {
+    setProductsCart((prevAddedProductsCart) => {
+      const product = prevAddedProductsCart.find(
+        (el) => el.id === currentProductClicked.id
+      );
+
+      switch (buttonClickedAction) {
+        case ButtonAction.Decrement:
+          product && (product.currentNumberSelected -= 1);
+          break;
+        case ButtonAction.Increment:
+          product && (product.currentNumberSelected += 1);
+          break;
+      }
+
+      return [...prevAddedProductsCart];
+    });
+  };
+
   const addProductToCart = (productToAdd: Product): void => {
     setProductsCart((prevAddedProductsCart) => {
       const productFound = prevAddedProductsCart.find(
@@ -94,7 +117,7 @@ function App() {
           {
             ...{
               ...productToAdd,
-              currentNumberSelected: 0,
+              currentNumberSelected: 1,
             },
           },
         ];
@@ -120,7 +143,7 @@ function App() {
               return (
                 <Homepage
                   {...{
-                    title: 'This is the title for the homepage',
+                    title: '',
                     result: APIState,
                     callbackProductAdded: addProductToCart,
                   }}
@@ -137,7 +160,14 @@ function App() {
           <Route
             path='/checkout'
             component={() => {
-              return (<Checkout {...{ productsCart }} />) as JSX.Element;
+              return (
+                <Checkout
+                  {...{
+                    productsCart,
+                    callBackButton: updateProductCart,
+                  }}
+                />
+              ) as JSX.Element;
             }}
           />
 

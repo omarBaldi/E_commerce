@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import HomepageProps from './dto';
 import ProductCardsTemplate from '../../organisms/product-cards-template/product-cards-template';
+import Styles from './homepage.module.scss';
 
 export const Homepage: FC<HomepageProps> = ({
   title,
@@ -12,7 +13,11 @@ export const Homepage: FC<HomepageProps> = ({
       {title && <h3>{title}</h3>}
 
       {/* Loading bar rendering while trying to retrieve the product list */}
-      {loading && <div>loading...</div>}
+      {loading && (
+        <div className={Styles.loadingBarContainer}>
+          <p>Loading...</p>
+        </div>
+      )}
 
       {/* If the products list is available render it in the template */}
       {products && (
