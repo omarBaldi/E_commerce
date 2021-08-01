@@ -10,6 +10,7 @@ import Routes from './appRoutes';
 import './App.scss';
 import { Product } from './molecules/product-card/dto';
 import API from './API';
+import { APIStateInterface } from './pages/homepage/dto';
 
 function App() {
   const [authenticated, setAuthenticated] = useState<boolean>(false);
@@ -17,11 +18,7 @@ function App() {
   const [productsCart, setProductsCart] = useState<
     (Product & { currentNumberSelected: number })[]
   >([]);
-  const [APIState, setAPIState] = useState<{
-    productsData: Product[];
-    error: string;
-    loading: boolean;
-  }>({
+  const [APIState, setAPIState] = useState<APIStateInterface>({
     productsData: [],
     error: '',
     loading: false,
@@ -38,7 +35,6 @@ function App() {
   };
 
   const getAllProducts = async (): Promise<void> => {
-    console.log('Get all products');
     updateAPIState('loading', true);
 
     try {
@@ -83,18 +79,8 @@ function App() {
     setFilteredRoutes(newRoutes);
   };
 
-  /* const productAlreadyExistInCart = (currentProductID: string): boolean => {
-    return retrieveIndexProduct(currentProductID) !== -1;
-  };
-
-  const retrieveIndexProduct = (currentProductID: string): number => {
-    return productsCart.findIndex((el) => el.id === currentProductID);
-  }; */
-
   const addProductToCart = (productToAdd: Product): void => {
-    console.log('Add product to cart');
     setProductsCart((prevAddedProductsCart) => {
-      //Check if the product is in cart
       const productFound = prevAddedProductsCart.find(
         (el) => el.id === productToAdd.id
       );
@@ -114,22 +100,6 @@ function App() {
         ];
       }
     });
-
-    /* setProductsCart((prevAddedProducts) => {
-      if (!productAlreadyExistInCart(data.id)) {
-        return [
-          ...prevAddedProducts,
-          {
-            ...data,
-            currentNumberSelected: 1,
-          },
-        ];
-      } else {
-        const currentProduct = prevAddedProducts[retrieveIndexProduct(data.id)];
-        currentProduct.currentNumberSelected += 1;
-        return [...prevAddedProducts];
-      }
-    }); */
   };
 
   return (
@@ -151,7 +121,7 @@ function App() {
                 <Homepage
                   {...{
                     title: 'This is the title for the homepage',
-                    products: APIState.productsData,
+                    result: APIState,
                     callbackProductAdded: addProductToCart,
                   }}
                 />
