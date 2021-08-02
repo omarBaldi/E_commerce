@@ -13,5 +13,16 @@
   }
   .checkoutSummary {
     background-color: lightgrey;
+    padding: 3rem;
+    .totalAmountContainer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .totalMoney {
+        font-weight: bolder;
+        font-size: 2em;
+        margin-top: 1rem;
+      }
+    }
   }
 }

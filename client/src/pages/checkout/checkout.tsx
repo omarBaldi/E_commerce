@@ -1,15 +1,18 @@
 import { FC } from 'react';
 import Separator from '../../atoms/separator/separator';
 import ProductCheckoutTemplate from '../../organisms/product-checkout-template/product-checkout-template';
-import CheckoutProps from './dto';
+import CheckoutProps, { ProductCartType } from './dto';
 import Styles from './checkout.module.scss';
+import { Product } from '../../molecules/product-card/dto';
+import Button from '../../atoms/button/button';
+import { ButtonType } from '../../atoms/button/dto';
 
 export const Checkout: FC<CheckoutProps> = ({
   productsCart,
   emitButtonCartEvent,
 }: CheckoutProps): JSX.Element => {
   const getTotalAmountOfProducts = (): number => {
-    return productsCart.reduce((acc, curr) => {
+    return productsCart.reduce((acc: number, curr: ProductCartType) => {
       return (acc += curr.currentNumberSelected);
     }, 0) as number;
   };
@@ -18,9 +21,20 @@ export const Checkout: FC<CheckoutProps> = ({
     return (
       <div>
         <p>Shopping cart</p>
-        <p>{getTotalAmountOfProducts()}</p>
+        <p>
+          {getTotalAmountOfProducts() > 0
+            ? `${getTotalAmountOfProducts()} items`
+            : 'No items selected'}
+        </p>
       </div>
     );
+  };
+
+  const calculateTotalMoneyAmount = (): number => {
+    return productsCart.reduce((acc: number, curr: ProductCartType) => {
+      const { price, currentNumberSelected } = curr;
+      return (acc += price * currentNumberSelected);
+    }, 0);
   };
 
   return (
@@ -35,7 +49,25 @@ export const Checkout: FC<CheckoutProps> = ({
           }}
         />
       </div>
-      <div className={Styles.checkoutSummary}></div>
+      <div className={Styles.checkoutSummary}>
+        <p>Order summary</p>
+        <Separator />
+        <div className={Styles.totalAmountContainer}>
+          <p>Total cost </p>
+          <p
+            className={Styles.totalMoney}
+          >{`${calculateTotalMoneyAmount()} $`}</p>
+        </div>
+        <div>
+          <Button
+            {...{
+              text: 'Checkout',
+              type: ButtonType.goTo,
+              callbackFunc: () => console.log('Button checkout clicked'),
+            }}
+          />
+        </div>
+      </div>
     </div>
   );
 };
